@@ -1,8 +1,9 @@
-import React, { useLayoutEffect, useContext } from "react";
+import React, { useLayoutEffect } from "react";
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { FavoritesContext } from '../store/context/favorites-context';
+import { useDispatch, useSelector } from 'react-redux';
+// import { FavoritesContext } from '../store/context/favorites-context';
 
 import IconButton from "../components/IconButton";
 import List from "../components/MealDetail/List";
@@ -10,6 +11,8 @@ import Subtitle from "../components/MealDetail/Subtitle";
 import MealDetails from "../components/MealDetails";
 import { MEALS } from "../data/dummy-data";
 import { RootStackParamList } from "../types";
+import { RootState } from "../store/redux/store";
+import { addFavorite, removeFavorite } from '../store/redux/favorites';
 
 type MealDetailScreenProps = {
   route:RouteProp<RootStackParamList, "MealDetail"> ;
@@ -17,18 +20,24 @@ type MealDetailScreenProps = {
 };
 
 const MealDetailScreen: React.FC<MealDetailScreenProps> = ({ route, navigation }) => {
-  const favoriteMealsCtx = useContext(FavoritesContext);
+  // const favoriteMealsCtx = useContext(FavoritesContext);
+  const favoriteMealIds = useSelector((state: RootState) => state.favoriteMeals.ids);
+  const dispatch = useDispatch();
+
   const mealId = route.params.mealId;
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
-  const mealIsFavorite = favoriteMealsCtx.ids.includes(mealId);
+  // const mealIsFavorite = favoriteMealsCtx.ids.includes(mealId);
+  const mealIsFavorite = favoriteMealIds.includes(mealId);
 
   const changeFavoriteStatusHandler = () => {
     if (mealIsFavorite) {
-      favoriteMealsCtx.removeFavorite(mealId);
+      // favoriteMealsCtx.removeFavorite(mealId);
+      dispatch(removeFavorite({ id: mealId }));
     } else {
-      favoriteMealsCtx.addFavorite(mealId);
+      // favoriteMealsCtx.addFavorite(mealId);
+      dispatch(addFavorite({ id: mealId }));
     }
   }
 
