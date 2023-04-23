@@ -10,8 +10,8 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
-import MealDetails from "./MealDetails";
-import { RootStackParamList } from "../types";
+import MealDetails from "../MealDetails";
+import { RootStackParamList } from "../../types";
 
 type MealItemProps = {
   id: string;
